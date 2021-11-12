@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlagrang <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/12 09:37:27 by mlagrang          #+#    #+#             */
-/*   Updated: 2021/11/12 15:18:05 by mlagrang         ###   ########lyon.fr   */
+/*   Created: 2021/11/12 14:38:12 by mlagrang          #+#    #+#             */
+/*   Updated: 2021/11/12 15:14:57 by mlagrang         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include <limits.h>
+#include "get_next_line_bonus.h"
 
 char	*ft_free(char *a)
 {
@@ -21,7 +20,7 @@ char	*ft_free(char *a)
 
 char	*get_next_line(int fd)
 {
-	static char	buff[BUFFER_SIZE + 1];
+	static char	buff[1025][BUFFER_SIZE + 1];
 	char		*txt;
 	int			i;
 
@@ -29,20 +28,20 @@ char	*get_next_line(int fd)
 	txt = NULL;
 	if (fd < 0 || BUFFER_SIZE == 0)
 		return (0);
-	if (ft_search(buff, '\n') != -1)
+	if (ft_search(buff[fd], '\n') != -1)
 	{
-		ft_cut(buff);
-		txt = ft_join(txt, buff);
+		ft_cut(buff[fd]);
+		txt = ft_join(txt, buff[fd]);
 		if (txt[0] == '\0')
 				txt = ft_free(txt);
 	}
-	while (ft_search(buff, '\n') == -1 && i > 0)
+	while (ft_search(buff[fd], '\n') == -1 && i > 0)
 	{
-		i = read(fd, buff, BUFFER_SIZE);
+		i = read(fd, buff[fd], BUFFER_SIZE);
 		if (i <= 0)
 			return (txt);
-		buff[i] = '\0';
-		txt = ft_join(txt, buff);
+		buff[fd][i] = '\0';
+		txt = ft_join(txt, buff[fd]);
 	}
 	return (txt);
 }
