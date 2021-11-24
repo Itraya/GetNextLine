@@ -20,7 +20,7 @@ char	*ft_free(char *a)
 
 char	*get_next_line(int fd)
 {
-	static char	buff[1025][BUFFER_SIZE + 1];
+	static char	buff[OPEN_MAX + 1][BUFFER_SIZE + 1];
 	char		*txt;
 	int			i;
 
